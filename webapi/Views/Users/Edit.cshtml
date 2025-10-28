@@ -1,0 +1,154 @@
+﻿@model webapi.Models.Users
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow border-0 bg-dark">
+                <div class="card-header bg-primary bg-gradient py-3">
+                    <h1 class="h4 text-white mb-0 text-center">
+                        <i class="fas fa-edit me-2"></i>Edit Person
+                    </h1>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="imageUrl" />
+
+                        <div class="form-group mb-4">
+                            <label asp-for="Name" class="form-label text-white fw-semibold">
+                                <i class="fas fa-user me-2"></i>Person Name
+                            </label>
+                            <input asp-for="Name" class="form-control bg-dark text-white border-secondary" placeholder="Enter person name" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="Email" class="form-label text-white fw-semibold">
+                                <i class="fas fa-map-marker-alt me-2"></i>Person Address
+                            </label>
+                            <input asp-for="Email" class="form-control bg-dark text-white border-secondary" placeholder="Enter person address" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="Password" class="form-label text-white fw-semibold">
+                                <i class="fas fa-lock me-2"></i>Password
+                            </label>
+                            <input asp-for="Password" class="form-control bg-dark text-white border-secondary" placeholder="Enter new password (or leave blank to keep old one)" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="ImageFile" class="form-label text-white fw-semibold">
+                                <i class="fas fa-image me-2"></i>Profile Image (Optional: Upload new to replace)
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="ImageFile" type="file"
+                                       class="form-control bg-dark text-white border-secondary"
+                                       accept="image/*" />
+                                <span class="input-group-text bg-secondary border-secondary text-white">
+                                    <i class="fas fa-upload"></i>
+                                </span>
+                            </div>
+                            <div class="form-text text-muted">
+                                <small>Supported formats: JPG, PNG, GIF, WEBP | Max size: 5MB</small>
+                            </div>
+                            <span asp-validation-for="ImageFile" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group mt-4 pt-3 border-top border-secondary">
+                            <div class="d-flex gap-2 justify-content-end">
+                                <a asp-action="Index" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to List
+                                </a>
+                                <button type="submit" class="btn btn-success px-4">
+                                    <i class="fas fa-save me-2"></i>Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        background: #1a1a2e !important;
+        [cite: 34] border: 1px solid #0d6efd;
+    }
+
+    .form-control {
+        border: 1px solid #495057;
+        [cite: 35] transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            [cite: 36] border-color: #0d6efd;
+            [cite: 36] box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            background-color: #2d3748;
+            [cite: 37]
+        }
+
+    .bg-gradient {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+        [cite: 38]
+    }
+
+    .input-group-text {
+        background: #495057 !important;
+        border-color: #495057 !important;
+        [cite: 39]
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #198754 0%, #146c43 100%);
+        [cite: 40] border-color: #198754;
+    }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #146c43 0%, #0f5132 100%);
+            [cite: 41] border-color: #146c43;
+        }
+
+    .alert-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        [cite: 42] color: white;
+    }
+
+    .border-secondary {
+        border-color: #495057 !important;
+        [cite: 43]
+    }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Bootstrap validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) { [cite: 44]
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated') [cite: 45]
+                    }, false)
+                })
+        })()
+    </script>
+}
