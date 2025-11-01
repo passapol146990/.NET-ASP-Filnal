@@ -1,53 +1,159 @@
 ﻿@model IEnumerable<webapi.Models.Users>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "จัดการผู้ใช้งาน";
 }
 
-<h1>Index</h1>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <i class="fas fa-users me-2"></i>จัดการผู้ใช้งาน
+        </h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>เพิ่มผู้ใช้ใหม่
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.imageUrl)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.imageUrl)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Detail" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-primary text-white">
+            <h6 class="m-0 font-weight-bold">
+                <i class="fas fa-table me-1"></i>รายชื่อผู้ใช้งานทั้งหมด
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="userTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Password)
+                            </th>
+                            <th class="text-center">
+                                รูปโปรไฟล์
+                            </th>
+                            <th class="text-center">การดำเนินการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="align-middle fw-bold">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td class="align-middle">
+                                    <a href="mailto:@item.Email" class="text-decoration-none">
+                                        <i class="fas fa-envelope me-1 text-muted"></i>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="input-group input-group-sm">
+                                        <input type="password"
+                                               value="@Html.DisplayFor(modelItem => item.Password)"
+                                               class="form-control"
+                                               readonly
+                                               style="background-color: #f8f9fa; border: none;">
+                                        <button class="btn btn-outline-secondary" type="button"
+                                                onclick="togglePasswordVisibility(this)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="position-relative">
+                                            <img width="60px" height="60px"
+                                                 src="~/images/@item.imageUrl"
+                                                 alt="@item.imageUrl"
+                                                 class="rounded-circle object-fit-cover border border-primary shadow-sm"
+                                                 onerror="this.src='https://via.placeholder.com/60?text=No+Image'">
+                                            <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle">
+                                                <span class="visually-hidden">Online</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="d-flex justify-content-center">
+                                        <a asp-action="Edit" asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-primary me-1"
+                                           title="แก้ไข">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Detail" asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-info me-1"
+                                           title="รายละเอียด">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a href="javascript:void(0)"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="ลบ"
+                                           onclick="confirmDelete('@item.Id', '@item.Name')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">ไม่พบข้อมูลผู้ใช้งาน</h5>
+                    <p class="text-muted">เริ่มต้นด้วยการเพิ่มผู้ใช้ใหม่</p>
+                    <a asp-action="Create" class="btn btn-primary mt-2">
+                        <i class="fas fa-plus me-1"></i>เพิ่มผู้ใช้ใหม่
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function togglePasswordVisibility(button) {
+            const input = button.parentElement.querySelector('input');
+            const icon = button.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function confirmDelete(userId, userName) {
+            Swal.fire({
+                title: 'ยืนยันการลบ?',
+                text: `คุณแน่ใจว่าต้องการลบผู้ใช้ ${userName} ใช่หรือไม่?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'ใช่, ลบเลย!',
+                cancelButtonText: 'ยกเลิก',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '@Url.Action("Delete", "Users")/' + userId;
+                }
+            });
+        }
+    </script>
 }
-    </tbody>
-</table>

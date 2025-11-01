@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
 using webapi.data;
 using webapi.Models;
 
 namespace CRUD_WEBSITE_PERSONS.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly UsersContext _context;

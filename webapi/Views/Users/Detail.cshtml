@@ -1,42 +1,314 @@
 ﻿@model webapi.Models.Users
 
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "รายละเอียดผู้ใช้";
 }
 
-<h1>Detail</h1>
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow border-0">
+                <div class="card-header bg-info text-white py-4">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-white bg-opacity-25 rounded-circle p-3 me-3">
+                            <i class="fas fa-user-circle fa-2x text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="h3 mb-1">รายละเอียดผู้ใช้</h1>
+                            <small class="opacity-75">ข้อมูลโดยละเอียดของผู้ใช้ระบบ</small>
+                        </div>
+                    </div>
+                </div>
 
-<div>
-    <h4>Users</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.imageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.imageUrl)
-        </dd>
-    </dl>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <!-- รูปภาพโปรไฟล์ -->
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="position-relative d-inline-block">
+                                <img src="~/images/@Model.imageUrl"
+                                     alt="Profile Image"
+                                     class="rounded-circle shadow-lg img-thumbnail"
+                                     style="width: 200px; height: 200px; object-fit: cover; border: 4px solid #0dcaf0;"
+                                     onerror="this.src='https://via.placeholder.com/200?text=No+Image'" />
+                                <span class="position-absolute top-0 end-0 bg-success border border-3 border-white rounded-circle p-2">
+                                    <i class="fas fa-check text-white"></i>
+                                </span>
+                            </div>
+                            <div class="mt-3">
+                                <span class="badge bg-primary fs-6 px-3 py-2">
+                                    <i class="fas fa-user me-2"></i>@Model.Name
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- ข้อมูลผู้ใช้ -->
+                        <div class="col-md-8">
+                            <div class="row g-3">
+                                <!-- ชื่อผู้ใช้ -->
+                                <div class="col-12">
+                                    <div class="card bg-light border-0 h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="fas fa-user text-info fa-lg"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="card-title text-muted mb-1">ชื่อผู้ใช้</h6>
+                                                    <p class="card-text h5 mb-0 text-dark fw-bold">@Model.Name</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- อีเมล -->
+                                <div class="col-12">
+                                    <div class="card bg-light border-0 h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="fas fa-envelope text-info fa-lg"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="card-title text-muted mb-1">อีเมล</h6>
+                                                    <p class="card-text h6 mb-0">
+                                                        <a href="mailto:@Model.Email" class="text-decoration-none text-dark">
+                                                            <i class="fas fa-at me-1 text-muted"></i>@Model.Email
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- รหัสผ่าน -->
+                                <div class="col-12">
+                                    <div class="card bg-light border-0 h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="fas fa-lock text-info fa-lg"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="card-title text-muted mb-1">รหัสผ่าน</h6>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="password"
+                                                               value="@Model.Password"
+                                                               class="form-control bg-white"
+                                                               readonly
+                                                               id="passwordField" />
+                                                        <button class="btn btn-outline-secondary" type="button"
+                                                                onclick="togglePasswordVisibility()">
+                                                            <i class="fas fa-eye" id="passwordIcon"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ชื่อไฟล์รูปภาพ -->
+                                <div class="col-12">
+                                    <div class="card bg-light border-0 h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="fas fa-image text-info fa-lg"></i>
+                                                </div>
+                                                <div class="flex-grow-1 min-width-0">
+                                                    <h6 class="card-title text-muted mb-2">ชื่อไฟล์รูปภาพ</h6>
+                                                    <div class="bg-white border rounded-2 p-3">
+                                                        <code class="d-block text-break text-wrap"
+                                                              style="font-size: 0.8em; line-height: 1.4; color: #d63384;">
+                                                            @Model.imageUrl
+                                                        </code>
+                                                    </div>
+                                                    <small class="text-muted mt-2 d-block">
+                                                        <i class="fas fa-info-circle me-1"></i>
+                                                        นามสกุล: @Model.imageUrl.Split('.').Last().ToUpper() |
+                                                        ความยาว: @Model.imageUrl.Length ตัวอักษร
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <style>
+                                    .min-width-0 {
+                                        min-width: 0;
+                                    }
+
+                                    .text-break {
+                                        word-wrap: break-word;
+                                        word-break: break-all;
+                                    }
+
+                                    code {
+                                        background: transparent;
+                                        border: none;
+                                        padding: 0;
+                                    }
+                                </style>
+
+                                <!-- ข้อมูลเพิ่มเติม -->
+                                <div class="col-12">
+                                    <div class="card bg-info bg-opacity-10 border-0">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-info bg-opacity-25 rounded-circle p-2 me-3">
+                                                    <i class="fas fa-info-circle text-info fa-lg"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="card-title text-info mb-1">ข้อมูลเพิ่มเติม</h6>
+                                                    <p class="card-text small mb-0 text-muted">
+                                                        <i class="fas fa-calendar me-1"></i>สร้างเมื่อ:
+                                                        <span class="fw-semibold">@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ปุ่มดำเนินการ -->
+                <div class="card-footer bg-light py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-muted small">
+                                <i class="fas fa-id-card me-1"></i>รหัสผู้ใช้: <strong>@Model.Id</strong>
+                            </span>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>กลับไปยังรายการ
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                                <i class="fas fa-edit me-2"></i>แก้ไขข้อมูล
+                            </a>
+                            <a href="javascript:void(0)" onclick="confirmDelete('@Model.Id', '@Model.Name')" class="btn btn-outline-danger">
+                                <i class="fas fa-trash me-2"></i>ลบ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 15px;
+        transition: transform 0.2s ease;
+    }
+
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+        border: none;
+        background: linear-gradient(135deg, #0dcaf0 0%, #0aa2c0 100%) !important;
+    }
+
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+
+    .img-thumbnail {
+        transition: transform 0.3s ease;
+    }
+
+        .img-thumbnail:hover {
+            transform: scale(1.05);
+        }
+
+    .btn-warning {
+        background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+        border: none;
+        font-weight: 600;
+        color: white !important;
+    }
+
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #e0a800 0%, #c69500 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+        }
+
+    .badge {
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+    .form-control:focus {
+        border-color: #0dcaf0;
+        box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.25);
+    }
+
+    code {
+        background-color: #e9ecef;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.875em;
+        color: #d63384;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('passwordField');
+            const passwordIcon = document.getElementById('passwordIcon');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                passwordIcon.classList.remove('fa-eye');
+                passwordIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                passwordIcon.classList.remove('fa-eye-slash');
+                passwordIcon.classList.add('fa-eye');
+            }
+        }
+
+        // เพิ่มเอฟเฟกต์เมื่อโหลดหน้าเสร็จ
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.classList.add('animate__animated', 'animate__fadeInUp');
+            });
+
+            const emailLink = document.querySelector('a[href^="mailto:"]');
+            if (emailLink) {
+                emailLink.addEventListener('click', function() {
+                    console.log('Email clicked:', '@Model.Email');
+                });
+            }
+        });
+
+        function confirmDelete(userId, userName) {
+            Swal.fire({
+                title: 'ยืนยันการลบ?',
+                text: `คุณแน่ใจว่าต้องการลบผู้ใช้ ${userName} ใช่หรือไม่?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'ใช่, ลบเลย!',
+                cancelButtonText: 'ยกเลิก',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '@Url.Action("Delete", "Users")/' + userId;
+                }
+            });
+        }
+    </script>
+}
